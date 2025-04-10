@@ -5,6 +5,7 @@ import { Button, TextField } from "@mui/material";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../auth/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().required().email(),
@@ -27,7 +28,7 @@ function LoginForm() {
     values: { email: "", password: "" },
   });
   const { setToken } = useAuth();
-
+  const navigate = useNavigate();
   const {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
@@ -36,7 +37,9 @@ function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      setToken(data.token);
+      console.log("setting:", data);
+      setToken(data.access_token);
+      navigate("/");
     },
     onError: () => {
       methods.setError("email", {

@@ -1,8 +1,7 @@
-import React from "react";
-import { useAuth } from "../auth/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/Login";
+import GuestRoute from "./GuestRoute";
 
 const routesForPublic = [
   {
@@ -30,22 +29,18 @@ const routesForAuthenticatedOnly = [
 
 const routesForNotAuthenticatedOnly = [
   {
-    path: "/",
-    element: <div>Home Page</div>,
+    element: <GuestRoute />,
+    children: [
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <div>Register</div> },
+    ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  { path: "/register", element: <div>Login</div> },
 ];
-
 function Routes() {
-  const { token } = useAuth();
 
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...(!token ? routesForNotAuthenticatedOnly : []),
+    ...routesForNotAuthenticatedOnly,
     ...routesForAuthenticatedOnly,
   ]);
   return <RouterProvider router={router} />;

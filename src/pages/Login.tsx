@@ -1,8 +1,15 @@
 import { Box, Stack, Typography } from "@mui/material";
 import LoginForm from "../forms/LoginForm";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 function Login() {
+  const { token } = useAuth();
 
+  if (token) {
+    return <Navigate to="/" />;
+  }
+  
   return (
     <Box
       display="flex"
