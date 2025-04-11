@@ -1,48 +1,27 @@
-import ProtectedRoute from "./ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Tasks from "../pages/Tasks";
 
-const routesForPublic = [
+const routes = [
   {
     path: "/",
     element: <div>landing</div>,
   },
-];
-
-const routesForAuthenticatedOnly = [
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
   {
-    path: "/",
-    element: <ProtectedRoute />,
-    children: [
-      {
-        path: "/",
-        element: <div>tasks</div>,
-      },
-      {
-        path: "/logout",
-        element: <div>Logout</div>,
-      },
-    ],
+    path: "/tasks",
+    element: <Tasks />,
+  },
+  {
+    path: "/logout",
+    element: <div>Logout</div>,
   },
 ];
 
-const routesForNotAuthenticatedOnly = [
-  {
-    // element: <GuestRoute />,
-    children: [
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
-    ],
-  },
-];
 function Routes() {
-
-  const router = createBrowserRouter([
-    ...routesForPublic,
-    ...routesForNotAuthenticatedOnly,
-    ...routesForAuthenticatedOnly,
-  ]);
+  const router = createBrowserRouter([...routes]);
   return <RouterProvider router={router} />;
 }
 

@@ -7,9 +7,9 @@ function Login() {
   const { token } = useAuth();
 
   if (token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/tasks" />;
   }
-  
+
   return (
     <Box
       display="flex"
