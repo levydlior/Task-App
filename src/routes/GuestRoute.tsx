@@ -3,9 +3,9 @@ import { useAuth } from "../auth/AuthProvider";
 
 function GuestRoute() {
   const { token } = useAuth();
-
+console.log(token)
   if (token) {
-    return <Navigate to="/" replace />; 
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

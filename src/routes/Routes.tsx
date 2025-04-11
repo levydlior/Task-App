@@ -1,7 +1,7 @@
 import ProtectedRoute from "./ProtectedRoute";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "../pages/Login";
-import GuestRoute from "./GuestRoute";
+import Register from "../pages/Register";
 
 const routesForPublic = [
   {
@@ -29,10 +29,10 @@ const routesForAuthenticatedOnly = [
 
 const routesForNotAuthenticatedOnly = [
   {
-    element: <GuestRoute />,
+    // element: <GuestRoute />,
     children: [
       { path: "/login", element: <Login /> },
-      { path: "/register", element: <div>Register</div> },
+      { path: "/register", element: <Register /> },
     ],
   },
 ];

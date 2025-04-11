@@ -37,9 +37,8 @@ function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log("setting:", data);
       setToken(data.access_token);
-      navigate("/");
+      navigate("/tasks");
     },
     onError: () => {
       methods.setError("email", {
