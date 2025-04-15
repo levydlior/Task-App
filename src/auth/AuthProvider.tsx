@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 type AuthContextType = {
   token: string | null;
@@ -17,9 +17,9 @@ const AuthContext = createContext<AuthContextType>({
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken_] = useState(localStorage.getItem("token"));
-  const setToken = (newToken: string | null) => {
+  const setToken = useCallback((newToken: string | null) => {
     setToken_(newToken);
-  };
+  },[]);
 
   useEffect(() => {
     if (token) {
@@ -30,6 +30,22 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("token");
     }
   }, [token]);
+
+  useEffect(() => {
+    const responseInterceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          setToken(null);
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(responseInterceptor);
+    };
+  }, [setToken]);
 
   const contextValue = useMemo(
     () => ({
